@@ -3,7 +3,7 @@ import itertools
 import gridfs
 import datetime
 
-from django.utils.datastructures import SortedDict
+from django.utils.datastructures import OrderedSet
 
 from django.forms.forms import BaseForm, get_declared_fields, NON_FIELD_ERRORS, pretty_name
 from django.forms.widgets import media_property
@@ -145,7 +145,7 @@ def fields_for_document(document, fields=None, exclude=None, widgets=None,
                         formfield_callback=None,
                         field_generator=MongoFormFieldGenerator):
     """
-    Returns a ``SortedDict`` containing form fields for the given model.
+    Returns a ``OrderedSet`` containing form fields for the given model.
 
     ``fields`` is an optional list of field names. If provided, only the named
     fields will be included in the returned fields.
@@ -188,9 +188,9 @@ def fields_for_document(document, fields=None, exclude=None, widgets=None,
         else:
             ignored.append(f.name)
 
-    field_dict = SortedDict(field_list)
+    field_dict = OrderedSet(field_list)
     if fields:
-        field_dict = SortedDict(
+        field_dict = OrderedSet(
             [(f, field_dict.get(f)) for f in fields
                 if ((not exclude) or (exclude and f not in exclude)) and (f not in ignored)]
         )
