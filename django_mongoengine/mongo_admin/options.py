@@ -21,7 +21,7 @@ from django.db.models.constants import LOOKUP_SEP
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
 from django.utils.decorators import method_decorator
-from django.utils.datastructures import SortedDict
+from django.utils.datastructures import OrderedDict
 from django.utils.html import escape, escapejs
 from django.utils.safestring import mark_safe
 from django.utils.functional import curry
@@ -649,7 +649,7 @@ class DocumentAdmin(BaseDocumentAdmin):
         # want *any* actions enabled on this page.
         from django.contrib.admin.views.main import IS_POPUP_VAR
         if self.actions is None or IS_POPUP_VAR in request.GET:
-            return SortedDict()
+            return OrderedDict()
 
         actions = []
 
@@ -670,9 +670,9 @@ class DocumentAdmin(BaseDocumentAdmin):
         # get_action might have returned None, so filter any of those out.
         actions = filter(None, actions)
 
-        # Convert the actions into a SortedDict keyed by name
+        # Convert the actions into a OrderedDict keyed by name
         # and sorted by description.
-        actions = SortedDict([
+        actions = OrderedDict([
             (name, (func, name, desc))
             for func, name, desc in actions
         ])
